@@ -349,6 +349,11 @@ fn gen_packages_for_model<HasSource: SourceKind>(
 
         // generate modules
         for module in pkg.modules() {
+            let is_coin_registry = module.package().address() == AccountAddress::TWO
+                && module.name().to_string() == "coin_registry";
+            if is_coin_registry {
+                continue;
+            }
             let module_path = package_path.join(module_import_name(module.name()));
             std::fs::create_dir_all(&module_path)?;
 

@@ -380,6 +380,12 @@ pub fn gen_package_init_ts<HasSource: SourceKind>(
             $(ref toks {
                 for module in pkg.modules() {
                     let module_name = module.name().to_string();
+                    let is_coin_registry =
+                        module.package().address() == AccountAddress::TWO &&
+                        module.name().to_string() == "coin_registry";
+                    if is_coin_registry {
+                        continue;
+                    }
 
                     let mut imported_name = module_name.to_case(Case::Camel);
                     if JS_RESERVED_WORDS.contains(&imported_name.as_str()) {
